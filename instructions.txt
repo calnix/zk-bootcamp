@@ -1,0 +1,9 @@
+https://www.codecademy.com/article/how-to-use-jupyter-notebooks
+
+open terminal in folder root
+> jupyter lab
+
+serve and gui will load
+
+select ipynb file from there
+save json notebook files as ipynb formats
