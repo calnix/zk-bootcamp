@@ -120,6 +120,10 @@ for i in range(0, 11):
 
 ''''
 The red text can be thought of as starting with the identity element, and how many times we added the generator to it.
+
+# Point inverses are still vertically symmetric
+Here is an interesting observation: note that points that share the same x-value add up to 11, which corresponds to the identity element (12 mod 11 = 0).
+
 '''
 
 # %%
