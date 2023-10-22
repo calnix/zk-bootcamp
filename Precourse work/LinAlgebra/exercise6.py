@@ -6,7 +6,7 @@ Numpy let's you select rows and columns from matrices. For example, given
 [[1,2,3],
  [4,5,6],
  [7,8,9]] 
-you can retrive [2,5,8] or [7,8,9] conveniently. Implement those below:
+you can retrieve [2,5,8] or [7,8,9] conveniently. Implement those below:
 
 '''
 
