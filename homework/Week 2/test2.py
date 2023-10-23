@@ -1,5 +1,5 @@
-
 import secrets
+
 
 # 1. generate random 32 bytes as private key, cast as hex
 pk = secrets.token_bytes(32)
@@ -16,14 +16,13 @@ print("The random private key generated is: {}".format(pk_hex))
 
 # 2. generate the public key using that private key
 
-# secp256k1 curve: y2 = x3 + 7
-# For curve: y^2 = x^3 + ax^2 + b
 def point_double(P, p, a=0, b=7):
+    # check for the zero point 
+    if P is None: 
+        return None
+    
     x, y = P
-    
-    if x is None:
-        return None, None
-    
+        
     # a has impact here
     lambd = (((3 * x**2 + a) % p ) *  pow(2 * y, -1, p)) % p
     
@@ -56,31 +55,10 @@ def point_add(P, Q, p, a=0, b=7):
     xr = (lambd**2 - xp - xq) % p
     yr = (lambd*(xp - xr) - yp) % p
     return xr, yr
-    xp, yp = P
-    xq, yq = Q
-
-    # Q + I = Q, (if P == I)
-    if P is None or Q is None: # check for the zero point 
-        return P or Q
-    
-    if P == Q: # P + P = 2P
-        return point_double(Q, p, a, b)
-    elif xq == xp and yp == -yq: 
-        # P + (-P) = I
-        return (None, None)
-
-    # assert closure
-    assert (xq**3 + 3) % p == (yq ** 2) % p, "q not on curve"
-    assert (xp**3 + 3) % p == (yp ** 2) % p, "p not on curve"
-       
-    lambd = ((yq - yp) * pow((xq - xp), -1, p) ) % p
-    xr = (lambd**2 - xp - xq) % p
-    yr = (lambd*(xp - xr) - yp) % p
-    return xr, yr
 
 def double_and_add(generator_point, scalar, p):
     # Initialize the result to the point at infinity (0, 0)
-    result = (0, 0)
+    result_x, result_y = None, None
     
     # Convert the scalar to its binary representation
     binary_scalar = bin(scalar)[2:]  # Remove the '0b' prefix
@@ -90,7 +68,7 @@ def double_and_add(generator_point, scalar, p):
         result = point_double(result, p)  # Double the result point
         
         if bit == '1':
-            result = point_add(result, generator_point, a, p)  # Add the generator point if the bit is 1
+            result = point_add(result, generator_point, p)  # Add the generator point if the bit is 1
     
     return result
 
@@ -104,21 +82,26 @@ y = 3267051002075881697808308513050704318447127338065924327593890433575733748242
 G = (x, y)
 assert pow(y, 2, p) == (pow(x, 3) + 7) % p
 
+#
+print("...")
+print(point_double(G, p))
+print("...")
 
-print(bin(scalar))
+Q = point_double(G, p)
+x = Q[0]
+y = Q[1]
+assert pow(y, 2, p) == (pow(x, 3) + 7) % p
+
+print("...")
+R = point_add(G, Q, p)
+x = R[0]
+y = R[1]
+assert pow(y, 2, p) == (pow(x, 3) + 7) % p
+print(R)
+print("...")
 
 
-# use double and add algo. algo runtime is O(log_2 n) vs O(n)
-pub_key = double_and_add(G, 5, p)
-print(pub_key)
+double_and_add(G, 2, p)
 
-'''
-Implement ECDSA from scratch
 
-1) pick a private key
-2) generate the public key using that private key (not the eth address, the public key)
-3) pick message m and hash it to produce h (h can be thought of as a 256 bit number)
-4) sign m using your private key and a randomly chosen nonce k. produce (r, s, h, PubKey)
-5) verify (r, s, h, PubKey) is valid
- You may use a library for point multiplication, but everything else you must do from scratch
-'''
+
