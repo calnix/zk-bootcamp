@@ -1,3 +1,32 @@
+# Generating public keys in ethereum
+
+## Private key
+
+- An ethereum address first requires a completely unique and random private key to be generated.
+- A private key is basically a random positive integer that is 256 bits == 64 hex characters == 32 bytes in length. 
+- Basically pick a number btw 1 and 2^256 (a 78 digit number!)
+
+> 2^256 is an astronomically larger number and is equivalent to the number of atoms in the universe!
+
+## Public key generation
+
+- uses elliptic curve cryptography
+- its a trapdoor function / 1-way function
+- cannot generate the private key from the public key
+- The public key algorithm is secp256k1, the same used in bitcoin
+- Because it is an elliptic curve algorithm, the public key is an (x, y) pair corresponds to a point on the elliptic curve.
+
+To create a public / private key pair, a random number s is created (this is the secret key).
+The point G is added to itself s times and the new point (x, y) is the public key. 
+It is not feasible to derive s from G and (x, y) if s is sufficiently large.
+
+> Adding G to itself s times is the same as multiplying s * G. 
+
+## Ethereum address
+
+- An ethereum address is the last 20 bytes of the keccack256 of the public key
+
+
 # ECDSA 
 
 ### To get public key:

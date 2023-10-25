@@ -69,6 +69,9 @@ The ECDSA key-pair consists of:
 - public key (EC point): pubKey = privKey * G,
 
 > G is the generator point of the EC curve
+
+The private key is generated as a random integer in the range [0...n-1]. The public key is a point on the elliptic curve, calculated by the EC point multiplication: `pubKey = privKey * G` (point multiplication)
+
 To create a public / private key pair, a random number s is created (this is the secret key).
 The point G is added to itself s times and the new point (x, y) is the public key. 
 It is not feasible to derive s from G and (x, y) if s is sufficiently large.
@@ -93,14 +96,22 @@ The ECDSA signing algorithm is based on the ElGamal signature scheme and works a
     > k^-1 is the modular inverse 
 5. Return the signature {r, s}.
 
-The calculated signature {r, s} is a pair of integers, each in the range [1...p-1]. 
+The calculated signature {r, s} is a pair of integers, each in the range [1...n-1]. 
 It encodes the random point R = k * G, along with a proof s, confirming that the signer knows the message h and the private key privKey. 
 The proof s is by idea verifiable using the corresponding pubKey.
-
-
 
 ### On generating r:
 
 RFC 6979 essentially prescribes not using randomness at all at signing time, but computing the nonce using a (specific) hash function that takes the message and private key as input. Under reasonable assumptions, this is just as unpredictable to attackers (who don't know the private key) as using actual randomness, but avoids the engineering challenges with having access to a good RNG.
 
 https://bitcoin.stackexchange.com/questions/101634/how-is-the-random-number-r-for-transaction-signatures-created
+
+## ECDSA Verify
+
+1. Calculate the message hash, with the same cryptographic hash function used during the signing: h = hash(msg)
+2. Calculate the modular inverse of the signature proof: s1 = 
+3. Recover the random point used during the signing: R' = (h * s1) * G + (r * s1) * pubKey
+4. Take from R' its x-coordinate: r' = R'.x
+5. Calculate the signature validation result by comparing whether r' == r
+
+The general idea of the signature verification is to recover the point R' using the public key and check whether it is same point R, generated randomly during the signing process.
