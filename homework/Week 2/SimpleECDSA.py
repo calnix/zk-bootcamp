@@ -198,7 +198,7 @@ def sign_message(curve, h, priv_key: int):
         # generate s, the signature proof:  
         # s = k^-1 * (h + r * privKey) (mod p)
         # k^-1 which is the ‘modular multiplicative inverse‘ of k
-        s = (pow(k, -1, p) * (h + (r * priv_key))) % p
+        s = (pow(k, -1, n) * (h + (r * priv_key))) % n
         assert s < p, "s is not smaller than p"
 
     return r, s
