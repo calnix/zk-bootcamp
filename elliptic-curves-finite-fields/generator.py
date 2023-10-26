@@ -65,7 +65,7 @@ Result:
 12 4 10     (overflow)
 
 Under mod 11, the field has an order of 11. (p = 11)
-We can plug x-values from [0, 10]; 11 elements.
+We can plug in 11 field elements (x-values) from [0, 10] into the curve equation.
 
 There would be a max of 11 EC points, excluding the identity; point at infinity is not included.
 
@@ -176,7 +176,7 @@ b=3
 x = 4
 y = 10
 
-# secp256k1: y^2 = x^3 + 7:
+# y^2 = x^3 + 7 mod 11
 curve = EllipticCurve(a, b, p, n, x, y)
 
 # Sanity checks
