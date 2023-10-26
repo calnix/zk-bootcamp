@@ -39,7 +39,7 @@ print(0, 4, 10)
 
 points = [(next_x, next_y)]
 
-for i in range(1, 13):
+for i in range(1, 14):
     # repeatedly add G to the next point to generate all the elements
     next_x, next_y = add_points(next_x, next_y, 4, 10, 11)
     print(i, next_x, next_y)
@@ -47,34 +47,155 @@ for i in range(1, 13):
 
 '''
 Result:
-
-0 4 10
-1 7 7
-2 1 9
-3 0 6
-4 8 8
-5 2 0
-6 8 3
-7 0 5
-8 1 2
-9 7 4
+-------
+0  4 10
+-------
+1  7 7
+2  1 9
+3  0 6
+4  8 8
+5  2 0
+6  8 3
+7  0 5
+8  1 2
+9  7 4
 10 4 1
-11 None None
-12 4 10
+11 None None    
+-------------
+12 4 10     (overflow)
 
-Under mod 11, the field has an order of 11.
+Under mod 11, the field has an order of 11. (p = 11)
+We can plug x-values from [0, 10]; 11 elements.
+
 There would be a max of 11 EC points, excluding the identity; point at infinity is not included.
 
-Here “None” means the point at infinity. Ignoring that, there are 11 points, giving us an order of 11. 
+Since all the x-values yield a solutions; this means that the curve has a total of 11 + 1 = 12 points. 
+Curve has an order of 12. (n = 12)
 
+> Here “None” means the point at infinity. 
 
 Observe that (order + 1)G = G. Just like modular addition, when we “overflow”, the cycle starts over.
--> (11 + 1)G = 12G = G 
+-> (12 + 1)G = 13G = G 
 
-
-By multiplying the generator element, G by integers [2, 11], we get the other 10 points. 
+By multiplying the generator element, G by integers [1, 12], we get all 12 points of the curve.
 '''
 
+#%%
+#  y^2 = x^3 + ax + b mod p
+class EllipticCurve():
+    def __init__(self, a, b, p, n, x, y):
+        # coeff., order, modulus
+        self.a = a
+        self.b = b
+        self.p = p
+        self.n = n
+        # generator point
+        self.x = x
+        self.y = y
+        self.G = (x, y)
+    
+    def is_on_curve(self, point):
+        if point is None:
+            return True
+    
+        x, y = point
+        return (y**2 % self.p) == (x**3 + self.a * x + self.b) % self.p
+    
+    def add(self, point1, point2):
+        if not self.is_on_curve(point1) or not self.is_on_curve(point2):
+            raise Exception("Invalid result")
+        
+        if point1 is None:
+            return point2
+        if point2 is None:
+            return point1
+        x1, y1 = point1
+        x2, y2 = point2
+
+        # vertical
+        if x1 == x2 and y1 + y2 == 0 :
+            return None  # Identity element
+        if point1 == point2:
+            return self.double(point1)
+        else:
+            if x1 == x2:
+                return None   # Identity element
+            m = (y2 - y1) * pow(x2 - x1, -1, self.p)
+
+        x3 = (m**2 - x1 - x2) % self.p
+        y3 = (m * (x1 - x3) - y1) % self.p
+
+        return (x3, y3)
+    
+    def double(self, point):
+        if not self.is_on_curve(point):
+            raise Exception("Invalid result")
+        
+        if point is None:
+            return None  # Identity element
+        x1, y1 = point
+        if y1 == 0:
+            return None  # Identity element
+
+        # s = (3 * x1^2 + a) / (2 * y1) mod p
+        numerator = pow(x1, 2, self.p) * 3 + self.a
+        denominator = (y1 * 2) % self.p
+        s = (numerator * pow(denominator, -1, self.p)) % self.p
+
+        x3 = (pow(s, 2, self.p) - x1 - x1) % self.p
+        y3 = (s * (x1 - x3) - y1) % self.p
+
+        return (x3, y3)
+
+    def double_and_add(self, point, scalar):
+        
+        assert self.is_on_curve(point), "point not on curve"
+        #assert scalar > 0 and scalar % curve.p, "invalid scalar"
+
+        result = None
+        current = point
+
+        # Optimized approach using binary expansion
+        while scalar:
+            if scalar & 1:  # same as scalar % 2
+                result = self.add(result, current)
+                
+            current = self.double(current) 
+            scalar >>= 1  # same as scalar / 2
+
+        assert self.is_on_curve(result)
+        return result
+
+# secp256k1 curve under mod p:
+p = 11
+n = 12 
+# Curve coefficients:
+a=0
+b=3
+# G, generator point:
+x = 4
+y = 10
+
+# secp256k1: y^2 = x^3 + 7:
+curve = EllipticCurve(a, b, p, n, x, y)
+
+# Sanity checks
+G = (x, y)
+
+res = curve.double_and_add(G, 10)
+print("10G: {}".format(res))
+
+res = curve.double_and_add(G, 11)
+print("11G: {}".format(res))
+
+res = curve.double_and_add(G, 12)
+print("12G: {}".format(res))
+
+res = curve.double_and_add(G, 13)
+print("13G: {}".format(res))
+
+res = curve.double_and_add(G, 14)
+print("14G: {}".format(res))
 
 
 # %%

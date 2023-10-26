@@ -39,7 +39,7 @@ print(0, 4, 10)
 
 points = [(next_x, next_y)]
 
-for i in range(1, 13):
+for i in range(1, 14):
     # repeatedly add G to the next point to generate all the elements
     next_x, next_y = add_points(next_x, next_y, 4, 10, 11)
     print(i, next_x, next_y)
@@ -47,32 +47,88 @@ for i in range(1, 13):
 
 '''
 Result:
+-------
+0  4 10
+-------
+1  7 7
+2  1 9
+3  0 6
+4  8 8
+5  2 0
+6  8 3
+7  0 5
+8  1 2
+9  7 4
+10 4 1
+11 None None
+12 4 10
 
-1 4 10
-2 7 7
-3 1 9
-4 0 6
-5 8 8
-6 2 0
-7 8 3
-8 0 5
-9 1 2
-10 7 4
-11 4 1
+Under mod 11, the field has an order of 11. (p = 11)
+We can plug x-values from [0, 10]; 11 elements.
 
-Under mod 11, there would be a max of 11 points. The identity, point at infinity is not included.
+There would be a max of 11 EC points, excluding the identity; point at infinity is not included.
+
+Since all the x-values yield a solutions; this means that the curve has a total of 11 + 1 = 12 points. 
+Curve has an order of 12. (n = 12)
+
+> Here “None” means the point at infinity. 
+
+Observe that (order + 1)G = G. Just like modular addition, when we “overflow”, the cycle starts over.
+-> (11 + 1)G = 12G = G 
+
+
 By multiplying the generator element, G by integers [2, 11], we get the other 10 points. 
 '''
 
 
 
-''''
-At the above example (the EC over finite field y2 ≡ x3 + 7 mod 17), if we take the point G = {15, 13} as generator, any other point from the curve can be obtained by multiplying G by some integer in the range [1...18]. 
-Thus the order of this EC is n = 18 and its cofactor h = 1.
-
-Note that the curve has 17 normal EC points (shown at the above figures) + one special "point at infinity", all staying in a single subgroup, and the curve order is 18 (not 17).
-Note also, that if we take the point {5, 9} as generator, it will generate just 3 EC points: {5, 8}, {5, 9} and infinity. 
-Because the curve order is not prime number, different generators may generate subgroups of different order.
-
-This is a good example why we should not "invent" our own elliptic curves for cryptographic purposes and we should use proven curves.
+# %%
 '''
+ We can assign each point a “number” based on how many times we added the generator to itself to arrive at that point.
+ We can use the following code to plot the curve and assign a number next to it.
+'''
+import libnum
+import matplotlib.pyplot as plt
+
+def generate_points(mod):
+    xs = []
+    ys = []
+
+    def y_squared(x):
+        return (x**3 + 3) % mod
+
+    for x in range(0, mod):
+        if libnum.has_sqrtmod_prime_power(y_squared(x), mod, 1):
+            square_roots = libnum.sqrtmod_prime_power(y_squared(x), mod, 1)
+
+            # we might have two solutions 
+            for sr in square_roots:
+                ys.append(sr)
+                xs.append(x)
+    return xs, ys
+
+xs11, ys11 = generate_points(11)
+
+fig, (ax1) = plt.subplots(1, 1);
+fig.suptitle('y^2 = x^3 + 3 (mod 11)');
+fig.set_size_inches(13, 6);
+
+ax1.set_title("modulo 11")
+ax1.scatter(xs11, ys11, marker='o');
+ax1.set_xticks(range(0,11));
+ax1.set_yticks(range(0,11));
+ax1.grid()
+
+for i in range(0, 11):
+    plt.annotate(str(i+1), (points[i][0] + 0.1, points[i][1]), color="red");
+
+
+''''
+The red text can be thought of as starting with the identity element, and how many times we added the generator to it.
+
+# Point inverses are still vertically symmetric
+Here is an interesting observation: note that points that share the same x-value add up to 11, which corresponds to the identity element (12 mod 11 = 0).
+
+'''
+
+# %%
