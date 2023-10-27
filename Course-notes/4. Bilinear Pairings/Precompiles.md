@@ -8,9 +8,7 @@
 
 ## Address 0x04: Identity
 
-##  Address 0x05: Modexp
-
-
+## Address 0x05: Modexp
 
 ## Address 0x06 and 0x07 and 0x08: ecAdd, ecMul, and ecPairing (EIP-196 and EIP-197)
 
