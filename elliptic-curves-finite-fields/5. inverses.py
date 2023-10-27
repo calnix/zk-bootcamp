@@ -75,5 +75,6 @@ assert (int(P[1]) + int(P1[1])) == field_modulus, "y-values must add up to field
 
 # Point addition of P and its inverse will return the identity point: point at infinity
 # Adding the y-coordinates will return the field modulus
+# Adding the s-coordinates will return 0.
 
 
