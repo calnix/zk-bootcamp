@@ -63,13 +63,23 @@ But how the hell do we multiply two EC points? Thats where bilinear mapping come
     pG * qG = rG ==>  e(P,Q) = e(R,G)
  
  G is the generator point, and can be thought of as “1”.
- G in e(R, G) just means we took G and didn’t add anything. 
+ G in e(R, G) just means we took G and didn’t add anything.
  So in a sense, this is the same as saying P x Q = R x 1.
 
+So a bilinear pairing is a useful obfuscation, in that by plugging in elliptic curve points into the arguments in the manner above, 
+you can easily determine if p * q = r without knowing p, q, or r (because they’ve been turned into elliptic curve points via G).
+
+## Symmetric and Asymmetric Groups
+
+e: G₁ × G₂ → Gᴛ
+
+Symmetric is where the input groups are the same: e: G₁ == G₂.
+
+Asymmetric they would be different.
+One could think of G₁, G₂, and Gᴛ being different elliptic curve equations, possibly modulo different primes, and that would be valid because those are different groups.
+> In practice we use asymmetric groups.
 
 
-
-
-
+# Field Extensions
 
 
