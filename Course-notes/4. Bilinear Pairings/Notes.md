@@ -79,7 +79,34 @@ Asymmetric they would be different.
 One could think of G₁, G₂, and Gᴛ being different elliptic curve equations, possibly modulo different primes, and that would be valid because those are different groups.
 > In practice we use asymmetric groups.
 
+## Field Extensions
 
-# Field Extensions
+Bilinear pairings are rather agnostic to the kinds of groups you opt for, but Ethereum’s bilinear pairing of choice uses elliptic curves with field extensions.
+A field extension is a very abstract concept, and frankly, the relationship between a field and its extension doesn’t matter from a purely functional concept.
 
+We usually think of EC points as two points x and y. With field extensions, they consist of several (x, y) pairs. This is analogous to how complex numbers “extend” real numbers.
+
+- Essentially EC points with more than 2 dimensions.
+- Adhere to the same group properties:
+  - closed under addition, which is associative
+  - has an identity element
+  - each element has an inverse
+  - the group has a generator
+
+You don’t have to worry about how these field extensions are constructed or how to do math in them, they are also cyclic groups that follow the same rules of the groups you are familiar with.
+What is the point of this? Field extensions allow for the property of bilinearity.
+
+## Bilinear Pairings in Ethereum
+ - py_ecc maintained by Eth Foundation
+ - powers the precompile at address 0x8, in PyEVM implementation
+ - The Ethereum Precompile defined in EIP 197 works on points in G1 and G2, and implicitly works on points in G12.
+
+
+
+
+# Questions
+
+- cannot print C, G12
+- how come e: G1 * G2 = G12?
+    - how you get 12?
 
