@@ -28,3 +28,13 @@ This precompile was added in EIP152 and some sample code is available on the pro
 Smart contract developers should be careful when copying Solidity code to other EVM compatible chains as the precompiles on those chains might not match what Ethereum has. 
 For example, ecrecover and the other cryptographic precompiles are not supported on zksync. 
 >(The technical reasons for this is that most cryptography algorithms are not SNARK-friendly, they are expensive to verify from a zero knowledge proof perspective).
+
+
+
+19.37
+rational number _ .finitifled
+
+rational number  -> finite field
+
+- cos the remainder under modulo will be integer
+

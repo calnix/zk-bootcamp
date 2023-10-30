@@ -45,13 +45,34 @@ The order of an elliptic curve is the number of points on it (including the "poi
 
 So, although we have a possible p values from the prime number, not all the points will exist. The number of actual points is then defined by n.
 
-Thus, given x * G, the value of x can only go from 0 to (n-1).
+Thus, given x * G, the value of x can only go from 0 to (n-1). [or 1 to n]
 
 - ECC operations on point coordinates is in modulo p
 - DSA operations on multiplier, random number, and signature components is modulo n
 - The one exception is when the X coordinate in [0,p) gets reduced modulo n. Here there is room for a coding error if the coordinate is in [n,p). The lower bound n is excluded by the definition of ECDSA, but (n,p) is valid.
 
 Since we have a modulo (p) , it means that the possible values of y^2 are between 0 and p-1, which gives us p total possible values. However, since we are dealing with integers, only a smaller subset of those values will be a “perfect square” (the square value of two integers), which gives us N possible points on the curve where N < p.
+
+## ECC operations on point coordinates is modulo p, the field order
+
+Intuitively, it might seem ECC should be under curve order, as they are related. 
+
+But if you are operating in a finite field you need to honour its boundaries. 12 doesn't exist under mod 11; its mapped to the equivalence class of 1. 
+So you don't want your group operator: point addition to be generating points that don't exist within the finite field - that would break closure.
+
+**It helps to think off ECC in finite fields as:**
+
+- set of elements defined by finite field modulus (domain)
+- group operator: point addition
+
+## On why use curve order for the DSA stuff:
+
+> referring to the example in generator.py
+
+- (4, 10) is the generator element for the cyclic (ecc + finite field) group; not just one or the other.
+- for it to generate all elements via scalar multiplication: s * G, max(s) = n
+- So the boundary for scalar mul, such that closure isn't broken is capping it off at curve order.
+- cos as you see above, once you exceed you just loop through the equivalence classes.
 
 # ECDSA Signature/Verify process
 

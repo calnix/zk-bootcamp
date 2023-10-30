@@ -101,9 +101,6 @@ What is the point of this? Field extensions allow for the property of bilinearit
  - powers the precompile at address 0x8, in PyEVM implementation
  - The Ethereum Precompile defined in EIP 197 works on points in G1 and G2, and implicitly works on points in G12.
 
-
-
-
 # Questions
 
 - cannot print C, G12

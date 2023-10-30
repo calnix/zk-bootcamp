@@ -23,7 +23,7 @@ If you start w/ point P and add the curve order n, you will get P back: P = nP
 this implies:
     (x + y) mod curve_order == xG + yG.
 
-x + y = 15 <==> xG + yG = 15G
+x + y = 15 <==> xG + yG = 15Gno
  don't tell the verified x or y
  proof: xG, yG, 15
  give the verifier the proof
