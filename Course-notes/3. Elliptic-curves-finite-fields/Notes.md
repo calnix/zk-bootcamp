@@ -26,9 +26,7 @@ this implies:
 x + y = 15 <==> xG + yG = 15G
  don't tell the verified x or y
  proof: xG, yG, 15
- give the verifier the proof 
- 
-
+ give the verifier the proof
 
 # Associativity
 - point operations (add, mul) are assoc cos groups are assoc.

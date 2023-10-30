@@ -1,5 +1,7 @@
 from py_ecc.bn128 import G1, G2, pairing, add, multiply, eq
 
+# bn128 curve:  y^2 = x^3 +2 (mod p)
+
 print(G1)
 # (1, 2)
 
