@@ -21,3 +21,7 @@ contract HW3_2 {
     }
 
 }
+
+
+// nxn * 1xn = 1xn
+// 

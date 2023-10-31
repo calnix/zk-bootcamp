@@ -54,7 +54,7 @@ A = multiply(G2, 5)
 B = multiply(G1, 6)
 C = multiply(G2, 5 * 6)
 
-# order of scalr mul does not matter
+# order of scalar mul does not matter
 print(pairing(A, B) == pairing(C, G1))
 
 # To be mathematical our bn128 pairing does the following:
