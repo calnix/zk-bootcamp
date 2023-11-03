@@ -55,9 +55,9 @@ Since we have a modulo (p) , it means that the possible values of y^2 are betwee
 
 ## ECC operations on point coordinates is modulo p, the field order
 
-Intuitively, it might seem ECC should be under curve order, as they are related. 
+Intuitively, it might seem ECC should be under curve order, as they are related.
 
-But if you are operating in a finite field you need to honour its boundaries. 12 doesn't exist under mod 11; its mapped to the equivalence class of 1. 
+But if you are operating in a finite field you need to honour its boundaries. 12 doesn't exist under mod 11; its mapped to the equivalence class of 1.
 So you don't want your group operator: point addition to be generating points that don't exist within the finite field - that would break closure.
 
 **It helps to think off ECC in finite fields as:**
@@ -65,7 +65,7 @@ So you don't want your group operator: point addition to be generating points th
 - set of elements defined by finite field modulus (domain)
 - group operator: point addition
 
-## On why use curve order for the DSA stuff:
+## On why use curve order for the DSA stuff
 
 > referring to the example in generator.py
 

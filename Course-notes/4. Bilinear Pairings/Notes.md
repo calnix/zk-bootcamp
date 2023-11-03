@@ -5,7 +5,7 @@ We can add two different EC points together: P + Q = R
 
 **But we cannot multiply two different EC points together: P * Q**
 
-## Definition of a pairing 
+## Definition of a pairing
 
 A pairing, also known as a bilinear map, is a function e:G₁ × G₂ → GT between three groups G1,G2 and GT of prime order p, with generators g1=⟨G1⟩, g2=⟨G2⟩ and gT=⟨GT⟩, respectively.
 
@@ -52,32 +52,35 @@ This property allows for feasibility in computation.
 Assume: p * q = r
 
 What we are trying to do is:
-    P = pG, 
-    Q = qG, 
+    P = pG,
+    Q = qG,
     R = rG
 
 and convince the verifier that P and Q multiply to produce R.
     pG * qG = rG
 
-But how the hell do we multiply two EC points? Thats where bilinear mapping comes in.
+> the verifier will have access to G and r, to compute R and assert R == P*Q, as provided by the proofer
+
+### But how the hell do we multiply two EC points?
+
+That's where bilinear mapping comes in:
     pG * qG = rG ==>  e(P,Q) = e(R,G)
- 
+
  G is the generator point, and can be thought of as “1”.
  G in e(R, G) just means we took G and didn’t add anything.
  So in a sense, this is the same as saying P x Q = R x 1.
 
-So a bilinear pairing is a useful obfuscation, in that by plugging in elliptic curve points into the arguments in the manner above, 
+So a bilinear pairing is a useful obfuscation, in that by plugging in elliptic curve points into the arguments in the manner above,
 you can easily determine if p * q = r without knowing p, q, or r (because they’ve been turned into elliptic curve points via G).
 
 ## Symmetric and Asymmetric Groups
 
 e: G₁ × G₂ → Gᴛ
 
-Symmetric is where the input groups are the same: e: G₁ == G₂.
+Symmetric is where the input groups are the same: e: G₁ == G₂. Asymmetric they would be different.
 
-Asymmetric they would be different.
 One could think of G₁, G₂, and Gᴛ being different elliptic curve equations, possibly modulo different primes, and that would be valid because those are different groups.
-> In practice we use asymmetric groups.
+> In practice we use asymmetric groups
 
 ## Field Extensions
 
@@ -97,9 +100,11 @@ You don’t have to worry about how these field extensions are constructed or ho
 What is the point of this? Field extensions allow for the property of bilinearity.
 
 ## Bilinear Pairings in Ethereum
- - py_ecc maintained by Eth Foundation
- - powers the precompile at address 0x8, in PyEVM implementation
- - The Ethereum Precompile defined in EIP 197 works on points in G1 and G2, and implicitly works on points in G12.
+
+- py_ecc maintained by Eth Foundation
+- powers the precompile at address 0x8, in PyEVM implementation
+- The Ethereum Precompile defined in EIP 197 works on points in G1 and G2, and implicitly works on points in G12.
+
 
 # Questions
 
