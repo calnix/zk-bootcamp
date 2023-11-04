@@ -114,7 +114,7 @@ What is the point of this? Field extensions allow for the property of bilinearit
 - They messed around and found that it was the easiest to compute the pairing from: G1 * G2 -> G12
 - This is the Optimal Ate curve and was chosen cos' its pairing friendly.
 
-## Pairing
+## Pairing and G12
 
 e: G₁ × G₂ → Gᴛ
 
@@ -129,4 +129,9 @@ We don't have a way of pairing G12 points together.
 A: G12
 B: G12
 pair(A, B) will return error.
+
+> we can add G12 points: pairing(G2, G1) + pairing(G2, G1)
+
+Given a G12 point, we cannot decompose it into a G1 and G2 point.
+Nor can we figure out the scalars that went into its generation.
 

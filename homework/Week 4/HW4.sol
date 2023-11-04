@@ -8,22 +8,116 @@ contract HW3 {
         uint256 Y;
     }
 
+    struct ECPoint2 {
+        uint256 X1;
+        uint256 Y1;
+        uint256 X2;
+        uint256 Y2;
+    }
+
+
     //  bn128 G1: (1, 2)
     ECPoint public G1;
+    ECPoint2 public G2;
 
     // field modulus: 
     uint256 immutable public field_modulus = 21888242871839275222246405745257275088696311157297823662689037894645226208583;
 
     constructor(){
         G1 = ECPoint(1,2);
+        G2 = ECPoint({
+            X1: 10857046999023057135944570762232829481370756359578518086990519993285655852781, 
+            Y1: 11559732032986387107991004021392285783925812861821192530917403151452391805634,
+            X2: 8495653923123431417604973247489272438418190587263600148770280649306958101930,
+            Y2: 4082367875863433681332203403145435568316851327593401208105741076214120093531
+            });
     }
 
     /*//////////////////////////////////////////////////////////////
                              HW4 FUNCTIONS
     //////////////////////////////////////////////////////////////*/
 
+    // W₁z₂ = A₁b₂ + X₁y₂ + C₁d₂, where X₁ = x₁G₁ + x₂G₁ + x₃G₁ 
+    // 0 = -W₁z₂ + A₁b₂ + X₁y₂ + C₁d₂, where X₁ = x₁G₁ + x₂G₁ + x₃G₁ 
     
+    // w(G1*G2) = a(G1*G2) + x(G1*G2) + c(G1*G2), where x = x₁ + x₂ + x₃
+    // 0 = -w(G1*G2) + a(G1*G2) + x(G1*G2) + c(G1*G2), where x = x₁ + x₂ + x₃
 
+    // 1. tack all the scalars onto the G1 points via scalarMul
+    // 2. find the inverse of W, by flipping y-coord under field_modulus
+    // 3. submit the sequence of points into pairing: uint256[12] memory points
+
+    //G1 points: A₁, X₁, C₁ and W₁
+    //G2 points: b₂, y₂, d₂ and z₂
+    function pairing(uint256 x1, uint256 x2, uint256 x3, uint256 a, uint256 c, uint256 w, 
+        ECPoint2 calldata b, ECPoint2 calldata y, ECPoint2 calldata d, ECPoint2 calldata z
+        ) public view returns(bool) {
+        
+        // calc X₁ = x₁G₁ + x₂G₁ + x₃G₁ 
+        uint256 x = x1 + x2 + x3;
+        ECPoint memory X =  scalarMul(G1, x);
+
+        //cal G1 points: A = aG1, C = cG1, W = wG1
+        ECPoint memory A = scalarMul(G1, a);
+        ECPoint memory C = scalarMul(G1, c);
+        ECPoint memory W = scalarMul(G1, w);
+
+        // calc inverse of W: flip the y-coord
+        uint256 inverted_y =  modInverse(W.Y, field_modulus);        
+        ECPoint memory W_Inv = ECPoint(W.X, inverted_y);
+
+
+        //G2 points cannot be calc w/ precompiles: must be done off-chain
+        // (G1 + G2) = 6 points for 1 pair
+        uint256[12] memory points = [
+            W_Inv.X,
+            W_Inv.Y,
+            G2.X1,
+            G2.Y1,
+            G2.X2,
+            G2.Y2,
+            //next pair
+            A.X,
+            A.Y,
+            G2.X1,
+            G2.Y1,
+            G2.X2,
+            G2.Y2,
+            //next pair
+            X.X,
+            X.Y,
+            G2.X1,
+            G2.Y1,
+            G2.X2,
+            G2.Y2,
+            //next pair
+            C.X,
+            C.Y,
+            G2.X1,
+            G2.Y1,
+            G2.X2,
+            G2.Y2,
+        ];
+
+        bool result = pairings.run(points);
+        return result;
+    }
+
+    /** 
+     *  returns true if == 0,
+     *  returns false if != 0,
+     *  reverts with "Wrong pairing" if invalid pairing
+     */
+     function run(uint256[12] memory input) public view returns (bool) {
+        assembly {
+            let success := staticcall(gas(), 0x08, input, 0x0180, input, 0x20)
+            if success {
+                return(input, 0x20)
+            }
+        }
+        revert("Wrong pairing");
+    }
+}
 
 
     /*//////////////////////////////////////////////////////////////
