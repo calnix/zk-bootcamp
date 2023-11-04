@@ -18,6 +18,10 @@ contract HW3 {
         G1 = ECPoint(1,2);
     }
 
+    /*//////////////////////////////////////////////////////////////
+                              HW FUNCTIONS
+    //////////////////////////////////////////////////////////////*/
+
     // a + b = c
     function rationalAdd(ECPoint calldata A, ECPoint calldata B, uint256 num, uint256 den) public view returns (bool) {
 
@@ -35,6 +39,47 @@ contract HW3 {
         // return true if the prover knows two numbers that add up to num/den
         return verified;
     }
+
+    // M: n x n square matrix
+    // s: n elements (scalar vector)
+    // o: n elements (scalar vector)
+    // check if Ms == o*G
+    function matmul(uint256[] calldata matrix, uint256 n, ECPoint[] calldata s, uint256[] calldata o) public view returns (bool verified) {
+
+	    // revert if dimensions don't make sense or the matrices are empty
+        require(matrix.length == n*n, "matrix incorrect dimension");
+        require(s.length == n, "s incorrect dimension");
+        require(o.length == n, "o incorrect dimension");
+
+        // M * s
+        uint256 rowIndex = 0;
+        ECPoint[] memory Ms = new ECPoint[](n);
+
+        for (uint256 i = 0; i < n; i++){
+            // 1st element of each row
+            rowIndex = i * n;
+            //ele: (rowStartIndex, colIndex: j)
+            for (uint256 j = 0; j < n; j++){
+                uint256 ele = matrix[rowIndex + j];    
+                ECPoint memory product = scalarMul(s[j], ele);
+
+                // |1,2| *  | 🇵​​​​​ |  =   | 1🇵​​​​​ + 2🇶​​​​​ |
+                // |4,5|    | 🇶​​​​​ |     | 4🇵​​​​​ + 5🇶​​​​​ |
+                // we are doing the addition here
+                if (j == 0) Ms[i] = product;            //1st element for the seq.
+                else Ms[i] = pointAddition(Ms[i], product);
+            }
+        }
+
+        // verify Ms = o*G
+        for (uint256 i = 0; i < n; i++) {
+            verified = arePointsEqual(Ms[i], scalarMul(G1, o[i]));
+            if (verified == false) return verified;                 //early break
+        }   
+
+        // return true if Ms == 0 elementwise.
+        return verified;
+    } 
 
     /*//////////////////////////////////////////////////////////////
                                 HELPERS

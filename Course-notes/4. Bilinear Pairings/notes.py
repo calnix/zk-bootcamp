@@ -42,7 +42,7 @@ eq(add(add(G1, G1), G1), multiply(G1, 3))
 # Pairing
 
 # Scalar multiplication, before
-A = multiply(G2, 5)
+A = multiply(G2, 32)
 B = multiply(G1, 6)
 C = pairing(A, B)
 

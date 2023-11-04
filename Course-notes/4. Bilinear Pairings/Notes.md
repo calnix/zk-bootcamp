@@ -81,6 +81,7 @@ Symmetric is where the input groups are the same: e: G₁ == G₂. Asymmetric th
 
 One could think of G₁, G₂, and Gᴛ being different elliptic curve equations, possibly modulo different primes, and that would be valid because those are different groups.
 > In practice we use asymmetric groups
+> For asymmetric groups, the curve order of each ecc group must be the same. 
 
 ## Field Extensions
 
