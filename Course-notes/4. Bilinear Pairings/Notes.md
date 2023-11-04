@@ -80,8 +80,14 @@ e: G₁ × G₂ → Gᴛ
 Symmetric is where the input groups are the same: e: G₁ == G₂. Asymmetric they would be different.
 
 One could think of G₁, G₂, and Gᴛ being different elliptic curve equations, possibly modulo different primes, and that would be valid because those are different groups.
-> In practice we use asymmetric groups
+> In practice we use asymmetric groups. No one has figured out for symmetric groups.
 > For asymmetric groups, the curve order of each ecc group must be the same. 
+
+
+## How are pairings done
+
+- Miller Loop is used to do pairings
+- assume its a blackbox like SHA-256
 
 ## Field Extensions
 
@@ -105,11 +111,22 @@ What is the point of this? Field extensions allow for the property of bilinearit
 - py_ecc maintained by Eth Foundation
 - powers the precompile at address 0x8, in PyEVM implementation
 - The Ethereum Precompile defined in EIP 197 works on points in G1 and G2, and implicitly works on points in G12.
+- They messed around and found that it was the easiest to compute the pairing from: G1 * G2 -> G12
+- This is the Optimal Ate curve and was chosen cos' its pairing friendly.
 
+## Pairing
 
-# Questions
+e: G₁ × G₂ → Gᴛ
 
-- cannot print C, G12
-- how come e: G1 * G2 = G12?
-    - how you get 12?
+G₁: (1,2)  -> 1v-d curve
+G₂: ((x₁,y₁), (x₂,y₂)) -> 2d curve
+    | y₁ |^2  = | x₁ |^3  + ...
+    | y₂ |      | x₂ |  
+
+Gᴛ: 12-d curve. each point has 12 sets of coords.
+
+We don't have a way of pairing G12 points together.
+A: G12
+B: G12
+pair(A, B) will return error.
 
