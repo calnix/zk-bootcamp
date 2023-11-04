@@ -1,3 +1,6 @@
 [submodule "homework/Week 3/lib/forge-std"]
 	path = homework/Week 3/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "homework/Week 4/lib/forge-std"]
+	path = homework/Week 4/lib/forge-std
+	url = https://github.com/foundry-rs/forge-std
