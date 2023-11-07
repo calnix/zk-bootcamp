@@ -74,31 +74,31 @@ contract HW4 {
         uint256[24] memory points = [
             W_Inv.X,
             W_Inv.Y,
-            G2.X1,
             G2.Y1,
-            G2.X2,
+            G2.X1,
             G2.Y2,
+            G2.X2,
             //next pair
             A.X,
             A.Y,
-            G2.X1,
             G2.Y1,
-            G2.X2,
+            G2.X1,
             G2.Y2,
+            G2.X2,
             //next pair
             X.X,
             X.Y,
-            G2.X1,
             G2.Y1,
-            G2.X2,
+            G2.X1,
             G2.Y2,
+            G2.X2,
             //next pair
             C.X,
             C.Y,
-            G2.X1,
             G2.Y1,
-            G2.X2,
-            G2.Y2
+            G2.X1,
+            G2.Y2,
+            G2.X2
         ];
 
         bool result = run(points);
@@ -113,7 +113,8 @@ contract HW4 {
      */
      function run(uint256[24] memory input) public view returns (bool) {
         assembly {
-            let success := staticcall(gas(), 0x08, input, 0x0180, input, 0x20)
+            // mul(24, 0x20): input size for 24 vars
+            let success := staticcall(gas(), 0x08, input, mul(24, 0x80), input, 0x20)
             if success {
                 return(input, 0x20)
             }

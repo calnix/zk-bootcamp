@@ -12,7 +12,7 @@ contract HW4Test is Test {
     }
 
     function testPairings() public {
-        bool result = pairings.pairing(1,1,1,1,1,6);
+        bool result = pairings.pairing(1,1,1,1,1,5);
 
        assertEq(result, true);
     }
