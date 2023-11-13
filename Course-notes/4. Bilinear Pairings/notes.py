@@ -1,4 +1,4 @@
-from py_ecc.bn128 import G1, G2, pairing, add, multiply, eq
+from py_ecc.bn128 import G1, G2, pairing, add, multiply, eq, field_modulus
 
 # bn128 curve:  y^2 = x^3 + 3 (mod p)
 
@@ -69,3 +69,12 @@ Note that the library has a strange glitch in it when using the shortcut arithme
     # Typeerror, library bug
 '''
 
+from py_ecc.bn128 import G1, G2, pairing, add, multiply, eq, field_modulus
+print(field_modulus)
+print(pow(-848677436511517736191562425154572367705380862894644942948681172815252343932, 1, field_modulus))
+
+print(G2.)
+
+print(pow(15,-1,13))
+
+print(pow(56, 1, 13))
