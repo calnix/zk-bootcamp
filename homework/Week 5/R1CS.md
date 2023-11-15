@@ -124,7 +124,38 @@ Convert the following into R1CS constraints:
 1) y(y - 1)(y - 2) = 0
 2) 2out = [(y-1)(y-2)]x - 2[y(y-2)]x^2 + [y(y-1)]x^3
 
-(1) [y(y-1)]:       v1 = y * (y-1)
+From y(y - 1)(y - 2):
+    y^3 - 3y^2 + 2y
+(v1 = y * y)
+    3v1 - 2y = (v1 * y)
+
+From 2out = [(y-1)(y-2)]x - 2[y(y-2)]x^2 + [y(y-1)]x^3:
+    2out = xy^2 - 3xy + 2x - 2x^2y^2 + 4x^2y + x^3y^3 - x^3y
+
+(v2 = x * y)
+
+    2out = yv2 - 3v2 + 2x - 2(v2)^2 + 4xv2 + x(v2)^2 - v2(x^2)
+
+(v3 = v2 * x)
+
+    2out = v2(y - 3 - 2v2 + v3) + 2x + 4v3 - xv3
+
+(v4 = v3 * x)
+
+    2out = v2(y - 3 - 2v2 + v3) + 2x + 4v3 - v4
+    2out - 2x - 4v3 + v4 = v2 * (y - 3 - 2v2 + v3)
+
+Constraints:
+(1) [y*y]:       v1 = y * y
+(2)        3v1 - 2y = (v1 * y)
+(3)              v2 = x * y
+(4)              v3 = v2 * x
+(5)              v4 = v3 * x
+(6) 2out - 2x - 4v3 + v4 = v2 * (y - 3 - 2v2 + v3)
+
+# Ignore
+
+(1) [y*y]:       v1 = y * y
 (2) [y(y-1)(y-2)]:  v2 = v1 * (y-2)
 
 (3) [y(y-2)]:       v3 = y * (y-2)
