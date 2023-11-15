@@ -6,10 +6,10 @@ out - 5*x**3 + 4*y**2*x**2 - 13*x*y**2 - x**2 = - 10y
 ## Constraints
 (x**2): v1 = x * x
 (y**2): v2 = y * y
-(5x**3): v3 = 5x * v1
-(4y**2*x**3): v4 = 4v1 * v2
+(x**3): v3 = v1 * x
+(y**2*x**3): v4 = v1 * v2
 (13xy**2): v5 = 13x * v2
-out - v3 + v4 - v5 - v1 = - 10y
+out - 5v3 + 4v4 - v5 - v1 = - 10y
 
 There are 6 six constraints.
 
@@ -47,26 +47,78 @@ Cw = Aw * Bw
 
 ## Problem 2
 
-###  represent the assert statement as a polynomial:
-assert:    y = 0, 1, 2
-
-y = 0, return x
-y = 1, return x**2
-y = 2, return x**3
+### y can only be 0, 1, 2, as per the assert statement.
 
 polynomial constraint:
     y(y - 1)(y - 2) = 0
 
+### If-else condition
 
-R1CS constraint:
-v1 = y * (y-1)
-v2 = v1 * (y-2)
-v3 = v1 * v2
+if y = 0, out = x
+if y = 1, out = x^2
+if y = 2, out = x^3
 
-out = x(y - 1)(y - 2) + x**2(y - 2)(y) + x**3(y)(y - 1)
+polynomial constraint:
+    out = ax + bx^2 + c^3
 
-for y = 0,
-    out = x(-1)(-2) = 2x
+#### Finding c
+
+for y = 0 or 1:
+    c = 0
+
+for y = 2:
+    c = 1
+
+    c = y(y-1)/2
+
+> if y=2: cx^3 = 2/2 x^3 = x^3 
+
+#### Finding b
+
+for y = 0 or 2:
+    b = 0
+
+for y = 1:
+    b = 1
+
+    b = -y(y-2)
+
+> if y=1: bx^2 = -1(-1)x^2 = x^2 
+
+#### Finding a
+
+for y = 1 or 2:
+    a = 0
+
+for y = 0:
+    a = 1
+
+    a = (y-1)(y-2)/2
+
+> if y=0: ax = -1(-2)/2 x = x
+
+Therefore out = [(y-1)(y-2)/2]x + [-y(y-2)]x^2 + [y(y-1)/2]x^3
+
+2out = [(y-1)(y-2)]x + 2[-y(y-2)]x^2 + [y(y-1)]x^3
+
+## R1CS constraints
+
+Convert the following into R1CS constraints:
+1) y(y - 1)(y - 2) = 0
+2) 2out = [(y-1)(y-2)]x - 2[y(y-2)]x^2 + [y(y-1)]x^3
+
+(1) [y(y-1)]:       v1 = y * (y-1)
+(2) [y(y-1)(y-2)]:  v2 = v1 * (y-2)
+
+(3) [y(y-2)]:       v3 = y * (y-2)
+(4) [(y-1)(y-2)]:   v4 = (y-1) * (y-2)
+(5) [x^2]:          v5 = x * x 
+(6) [x^3]:
+
+2out = [(y-1)(y-2)]x - 2[y(y-2)]x^2 + [y(y-1)]x^3
+2out = v4*x - 2(v3)(v5) + v1*x^3
 
 
+Constraints 1 and 2 apply to `y(y - 1)(y - 2) = 0`.
+How do I ensure `v2 = 0` so tt y(y-1)(y-2) = 0?
 

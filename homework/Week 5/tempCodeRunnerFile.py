@@ -84,4 +84,4 @@ out = (5)*(x**3) - (4)*(x**2)*(y**2) + 13*(x)*(y**2) + (x**2) - 10*(y)
 
 w = np.array([1, out, x, y, v1, v2, v3, v4, v5])
 
-solution(A,B,C,w)
+solution(A,B,C, w)
