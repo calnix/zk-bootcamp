@@ -1,17 +1,17 @@
 # Problem 1
 
 out = 5*x**3 - 4*y**2*x**2 + 13*x*y**2 + x**2 - 10*y
-out - 5*x**3 + 4*y**2*x**2 - 13*x*y**2 - x**2 = - 10y
+out - 5*x**3 + 4*y**2*x**2 + 10y - x**2 = 13*x*y**2
+out - 5v3 + 4v4 + 10y - v1 = - 13x*v2
 
 ## Constraints
-(x**2): v1 = x * x
-(y**2): v2 = y * y
-(x**3): v3 = v1 * x
+(x**2):      v1 = x * x
+(y**2):      v2 = y * y
+(x**3):      v3 = v1 * x
 (y**2*x**3): v4 = v1 * v2
-(13xy**2): v5 = 13x * v2
-out - 5v3 + 4v4 - v5 - v1 = - 10y
+out - 5v3 + 4v4 + 10y - v1 = 13x * v2
 
-There are 6 six constraints.
+There are 5 constraints and 4 intermediate variables.
 
 ## Witness matrix, w
 
@@ -23,31 +23,48 @@ w = | 1   |
     | v2  |
     | v3  |
     | v4  |
-    | v5  |
-
-The vector w has 9 rows, reflecting 9 variables (input, output, intermediate). 
+    
+The vector w has 8 rows, reflecting 8 variables (input, output, intermediate).
 
 ## R1CS
 
-Dimension of R1CS: 6 rows * 9 cols
+Dimension of R1CS: 6 rows * 8 cols
 
-- 6 rows: 6 constraints
-- 9 cols: 9 witness variables
+- 5 rows: 5 constraints
+- 8 cols: 8 witness variables
 
 Cw = Aw * Bw
 
+### Matrix A
+            
+             [1 out x y v1 v2 v3 v4]
+              [0,0,1,0,0,0,0,0,0],
+              [0,0,0,1,0,0,0,0,0],
+              [0,0,0,0,1,0,0,0,0],
+              [0,0,0,0,1,0,0,0,0],
+              [0,0,13,0,0,0,0,0,0]
 
-       | 1  out  x  y  v1  v2  v3  v4  v5  |
-(1)    | 0   0   0  0  1   0   0           |   
-(2)    |                   1               |     =   
-(3)    |
-(4)    |
-(5)    |
-(6)    |
+### Matrix B
+
+             [1 out x y v1 v2 v3 v4]
+              [0,0,1,0,0,0,0,0,0],
+              [0,0,0,1,0,0,0,0,0],
+              [0,0,1,0,0,0,0,0,0],
+              [0,0,0,0,0,1,0,0,0],
+              [0,0,0,0,0,1,0,0,0]
+
+### Matrix C
+
+             [1 out x y v1 v2 v3 v4]
+              [0,0,0,0,0,1,0,0,0],
+              [0,0,0,1,0,0,1,0,0],
+              [0,0,1,0,0,0,0,1,0],
+              [0,0,0,0,0,1,0,0,1],
+              [0,1,0,10,-1,1,0,-5,4]
 
 ## Problem 2
 
-### y can only be 0, 1, 2, as per the assert statement.
+y can only be 0, 1, 2, as per the assert statement.
 
 polynomial constraint:
     y(y - 1)(y - 2) = 0
@@ -112,11 +129,12 @@ Convert the following into R1CS constraints:
 
 (3) [y(y-2)]:       v3 = y * (y-2)
 (4) [(y-1)(y-2)]:   v4 = (y-1) * (y-2)
-(5) [x^2]:          v5 = x * x 
+(5) [x^2]:          v5 = x * x
 (6) [x^3]:
 
 2out = [(y-1)(y-2)]x - 2[y(y-2)]x^2 + [y(y-1)]x^3
 2out = v4*x - 2(v3)(v5) + v1*x^3
+2out + 2(v3)(v5) - v1*x^3 = v4*x 
 
 
 Constraints 1 and 2 apply to `y(y - 1)(y - 2) = 0`.
