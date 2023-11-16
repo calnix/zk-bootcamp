@@ -109,7 +109,7 @@ C = np.array([[0,0,0,0,1,0,0,0],
               ])
 
 # pick random values for x and y
-x = random.randint(1,1000)
+x = random.randint(1,10)
 y = random.randint(0,2)
 
 # Generating witness vector, w

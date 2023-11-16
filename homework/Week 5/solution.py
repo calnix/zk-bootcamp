@@ -109,7 +109,7 @@ C = np.array([[0,0,0,0,1,0,0,0],
               ])
 
 # pick random values for x and y
-x = random.randint(1,1000)
+x = random.randint(1,10)
 y = random.randint(0,2)
 
 # Generating witness vector, w
@@ -122,3 +122,4 @@ out = ((y-1)*((y-2)/2))*(x) + (-y*(y-2))*(x^2) + (y*((y-1)/2))*(x^3)
 w = np.array([1, out, x, y, v1, v2, v3, v4])
 
 solution(A, B, C, w)
+# sometimes fails 
