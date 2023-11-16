@@ -103,9 +103,9 @@ B = np.array([[0,0,0,1,0,0,0,0],
 C = np.array([[0,0,0,0,1,0,0,0],
               [0,0,0,-2,3,0,0,0],
               [0,0,0,0,0,1,0,0],
-              [0,0,0,1,0,0,1,0],
-              [0,0,0,1,0,0,0,1],
-              [0,2,-2,1,0,0,-4,1]
+              [0,0,0,0,0,0,1,0],
+              [0,0,0,0,0,0,0,1],
+              [0,2,-2,0,0,0,-4,1]
               ])
 
 # pick random values for x and y
@@ -115,11 +115,11 @@ y = random.randint(0,2)
 # Generating witness vector, w
 v1 = y * y
 v2 = x * y
+assert ((3*v1 - 2*y) == (v1 * y)), "umm"
 v3 = v2 * x
 v4 = v3 * x
-out = ((y-1)*((y-2)/2))*(x) + (-y*(y-2))*(x^2) + (y*((y-1)/2))*(x^3)
+out = 0.5*(v2*(y - 3 - 2*v2 + v3) + 2*x + 4*v3 - v4)
 
 w = np.array([1, out, x, y, v1, v2, v3, v4])
 
 solution(A, B, C, w)
-# sometimes fails 

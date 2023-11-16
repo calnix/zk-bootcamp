@@ -200,6 +200,8 @@ Cw = Aw * Bw
 
 # Ignore
 
+This approach has too many constraints
+
 (1) [y*y]:       v1 = y * y
 (2) [y(y-1)(y-2)]:  v2 = v1 * (y-2)
 
