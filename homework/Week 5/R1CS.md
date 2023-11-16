@@ -28,7 +28,7 @@ The vector w has 8 rows, reflecting 8 variables (input, output, intermediate).
 
 ## R1CS
 
-Dimension of R1CS: 6 rows * 8 cols
+Dimension of R1CS: 5 rows * 8 cols
 
 - 5 rows: 5 constraints
 - 8 cols: 8 witness variables
@@ -154,7 +154,43 @@ Constraints:
 (6) 2out - 2x - 4v3 + v4 = v2 * (y - 3 - 2v2 + v3)
 
 
+w = [1, out, x, y, v1, v2, v3, v4]
+    
+## R1CS
 
+Dimension of R1CS: 6 rows * 8 cols
+
+- 6 rows: 5 constraints
+- 8 cols: 8 witness variables
+
+Cw = Aw * Bw
+
+### Matrix A
+            
+             [1 out x y v1 v2 v3 v4]
+              [0,0,1,0,0,0,0,0],
+              [0,0,0,1,0,0,0,0],
+              [0,0,0,0,1,0,0,0],
+              [0,0,0,0,1,0,0,0],
+              [0,0,13,0,0,0,0,0]
+
+### Matrix B
+
+             [1 out x y v1 v2 v3 v4]
+              [0,0,1,0,0,0,0,0],
+              [0,0,0,1,0,0,0,0],
+              [0,0,1,0,0,0,0,0],
+              [0,0,0,0,0,1,0,0],
+              [0,0,0,0,0,1,0,0]
+
+### Matrix C
+
+             [1 out x y v1 v2 v3 v4]
+              [0,0,0,0,1,0,0,0],
+              [0,0,0,0,0,1,0,0],
+              [0,0,0,0,0,0,1,0],
+              [0,0,0,0,0,0,0,1],
+              [0,1,0,10,-1,0,-5,4]
 
 
 
@@ -176,4 +212,3 @@ Constraints:
 
 Constraints 1 and 2 apply to `y(y - 1)(y - 2) = 0`.
 How do I ensure `v2 = 0` so tt y(y-1)(y-2) = 0?
-

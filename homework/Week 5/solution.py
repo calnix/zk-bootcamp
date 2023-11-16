@@ -80,3 +80,7 @@ out = (5*x**3) - (4*y**2*x**2) + (13*x*y**2) + x**2 - 10*y
 w = np.array([1, out, x, y, v1, v2, v3, v4])
 
 solution(A, B, C, w)
+
+
+# Test problem 2
+
