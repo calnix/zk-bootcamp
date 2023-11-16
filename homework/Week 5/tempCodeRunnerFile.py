@@ -29,7 +29,7 @@ def solution(A, B, C, w):
         return False
     
     # Check R1CS
-    result = C.dot(witness) == A.dot(witness) * B.dot(witness)
+    result = C.dot(w) == A.dot(w) * B.dot(w)
 
     # check that every element-wise equality is true
     assert result.all(), "result contains an inequality"
@@ -43,7 +43,7 @@ solution(A,B,C, w)
 
 # test problem 1
 
-# w:     | 1  out  x  y  v1  v2  v3  v4  v5  |
+# w:     | 1  out  x  y  v1  v2  v3  v4  |
 
 A = np.array([[0,0,1,0,0,0,0,0],
               [0,0,0,1,0,0,0,0],
@@ -70,20 +70,55 @@ C = np.array([[0,0,0,0,1,0,0,0],
 x = random.randint(1,1000)
 y = random.randint(1,1000)
 
-# intermediates 
+# Generating witness vector, w
 v1 = x * x 
 v2 = y * y 
 v3 = v1 * x
 v4 = v2 * v1
 out = (5*x**3) - (4*y**2*x**2) + (13*x*y**2) + x**2 - 10*y
 
-# generating witness vector
 w = np.array([1, out, x, y, v1, v2, v3, v4])
 
-Cc = C.dot(w) 
-Aa = A.dot(w) 
-Bb = B.dot(w)
+solution(A, B, C, w)
 
-# check that every element-wise equality is true
-assert result.all(), "result contains an inequality"
-print("true")
+
+# Test problem 2
+
+A = np.array([[0,0,0,1,0,0,0,0],
+              [0,0,0,0,1,0,0,0],
+              [0,0,1,0,0,0,0,0],
+              [0,0,0,0,0,1,0,0],
+              [0,0,0,0,0,0,1,0],
+              [0,0,0,0,0,1,0,0]
+              ])
+
+B = np.array([[0,0,0,1,0,0,0,0],
+              [0,0,0,1,0,0,0,0],
+              [0,0,0,1,0,0,0,0],
+              [0,0,1,0,0,0,0,0],
+              [0,0,1,0,0,0,0,0],
+              [-3,0,0,1,0,-2,1,0]
+              ])
+
+C = np.array([[0,0,0,0,1,0,0,0],
+              [0,0,0,-2,3,0,0,0],
+              [0,0,0,0,0,1,0,0],
+              [0,0,0,1,0,0,1,0],
+              [0,0,0,1,0,0,0,1],
+              [0,2,-2,1,0,0,-4,1]
+              ])
+
+# pick random values for x and y
+x = random.randint(1,1000)
+y = random.randint(0,2)
+
+# Generating witness vector, w
+v1 = y * y
+v2 = x * y
+v3 = v2 * x
+v4 = v3 * x
+out = ((y-1)*((y-2)/2))*(x) + (-y*(y-2))*(x^2) + (y*((y-1)/2))*(x^3)
+
+w = np.array([1, out, x, y, v1, v2, v3, v4])
+
+solution(A, B, C, w)
