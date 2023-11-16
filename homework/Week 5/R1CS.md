@@ -160,7 +160,7 @@ w = [1, out, x, y, v1, v2, v3, v4]
 
 Dimension of R1CS: 6 rows * 8 cols
 
-- 6 rows: 5 constraints
+- 6 rows: 6 constraints
 - 8 cols: 8 witness variables
 
 Cw = Aw * Bw
