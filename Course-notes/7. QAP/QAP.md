@@ -250,7 +250,7 @@ print([poly_final(1), poly_final(2), poly_final(3)])
 # [3.0, 6.0, -3.0]
 ```
 
-## Turning matrix multiplication into the Hadamard product 
+## Turning matrix multiplication into the Hadamard product
 
 | 1  2 | | x |  = | x  + 2y | = | x  | + | 2y |
 | 3  4 | | y |    | 3x + 4y |   | 3x |   | 4y |
