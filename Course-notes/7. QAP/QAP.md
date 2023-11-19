@@ -257,7 +257,7 @@ print([poly_final(1), poly_final(2), poly_final(3)])
                             
                               = |1| . |x|  + |2|.|y|
                                 |3|   |x|    |4| |y|
-
+                                
 ## If Ls⊙Rs = Os can be computed with vector arithmetic, then it can be computed with polynomial arithmetic
 
 At this point, computing Ls⊙Rs = Os in polynonmial space is obvious
