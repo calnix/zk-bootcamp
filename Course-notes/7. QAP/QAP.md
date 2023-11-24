@@ -27,11 +27,11 @@ The Schwartz-Zippel Lemma states that if two polynomials are evaluated for the s
 
 Therefore, P(x) == Q(x).
 
-> Can’t we just compare their coefficients of P1 and P2? 
+**Can’t we just compare their coefficients of P1 and P2?**
+
 > Well, that would not be succinct - it would be too many steps: O(n), where n is number of terms
 > we’re back to where we started doing element-wise comparison on matrices.
 > Simply comparing the evaluated value is succinct cos' its just 1 step: O(1)
-
 
 The goal is to prove we know Ls𝇇Rs = Os using only 3 values.
 
@@ -55,12 +55,13 @@ Hence, n-dimensional vectors of real numbers under the binary operators vector a
 
 *Polynomials under polynomial addition and polynomial multiplication are also a ring*
 
-Under Addition:
+**Under Addition:**
 1. Closed: duh, degree will just get larger: x * x = x^2
 2. Identity: zero polynomial (0x^0)
 3. Inverse: polynomial w/ opposite signs: 4x + -4x = 0x = 0
---
-Under Multiplication: 
+
+
+**Under Multiplication:**
 1. Closed: duh; poly * poly = polynomial
 2. Identity: 1 (1 is a polynomial of degree zero)
 3. Inverse: No. x * (1/x) = 1 does not count. 
@@ -88,10 +89,11 @@ Consequently, there exists a Ring Homomorphism from column vectors of dimension 
 
 ## Computing the transformation function for the homomorphism
 
-A polynomial contains an infinite amount of points, but an n-dimensional vector only encodes a finite number of points (n, to be specific). 
-To make the polynomial convey the same information as a vector, we decide on n predetermined values of x whose y values will represent the elements of the original vector.
+- A polynomial contains an infinite amount of points, but an n-dimensional vector only encodes a finite number of points (n, to be specific). 
+- To make the polynomial convey the same information as a vector, we decide on n predetermined values of x whose y values will represent the elements of the original vector.
 
-*Theorem:*
+**Theorem:**
+
 Given n points on a cartesian (x, y) plane, they can be uniquely interpolated by a polynomial of degree n - 1. 
 If the degree is not constrained, an infinite number of polynomials of degree n - 1 or higher can interpolate those points.
 
@@ -137,7 +139,8 @@ print(polyC(3))
 
 So ultimately, we can transform the y values [4, 12, 6] into: `-7x^2 + 29x -18`
 
-*But what about the infinite number of solutions?*
+**But what about the infinite number of solutions?**
+
 Our original vector has 3 points, but our transformation to a polynomial has infinite points. Doesn’t it seem like we are adding information that should not be there?
 As long as we stick to only looking at the y values of the polynomial at x = 1,2,3, nothing changes.
 
@@ -162,9 +165,9 @@ Expressing vector [4,12,6] as (x, y):
 
 *Example:*
 
-v1 = [1,0,1]
-v2 = [-1,5,3]
-v3 = v1 + v2 = [0,5,4]
+- v1 = [1,0,1]
+- v2 = [-1,5,3]
+- v3 = v1 + v2 = [0,5,4]
 
 Using x = 1, x = 2, x = 3 we transform v1 and v2 into their polynomial representations:
 
@@ -190,7 +193,7 @@ print([poly_v3(1), poly_v3(2), poly_v3(3)])
 # [0.0, 5.0, 4.0]
 ```
 
-We observe that poly_v3, the combined polynomial returns the vector v3 by subbing in x=1,2,3.
+We observe that `poly_v3`, the combined polynomial returns the vector v3 by subbing in x=1,2,3.
 Homomorphic!
 
 ### The Hadamard product of two vectors is homomorphic to multiplying two polynomials
@@ -252,26 +255,85 @@ print([poly_final(1), poly_final(2), poly_final(3)])
 
 ## Turning matrix multiplication into the Hadamard product
 
+```bash
 | 1  2 | | x |  = | x  + 2y | = | x  | + | 2y |
 | 3  4 | | y |    | 3x + 4y |   | 3x |   | 4y |
                             
                               = |1| . |x|  + |2|.|y|
                                 |3|   |x|    |4| |y|
-                                
+```
+
 ## If Ls⊙Rs = Os can be computed with vector arithmetic, then it can be computed with polynomial arithmetic
 
-At this point, computing Ls⊙Rs = Os in polynonmial space is obvious
+At this point, computing Ls⊙Rs = Os in polynomial space is obvious.
+ 
+ `Ls ⊙ Rs = Os => (U.a)(V.a) = (W.a)`
 
-1. To compute Ls, Rs, and Os we do a scalar multiplication (which is just shorthand for the Hadamard product with a repeating vector) on each column of L, R and O with the appropriate scalar value from vector s.
-    > Remember s is the witness vector, which contains the input values.
-2. Use Lagrange Interpolation to convert all the columns in each of the matrix into polynomials, and then add them (each column’s polynomial) up all together to get a polynomial.
+1. Interpolate the column vectors of L, R and O, (L -> U). Each column vector is a polynomial, which can be then expressed as in matrix form U as shorthand.
+2. After obtaining U,V and W, do the dot product against a respectively. `(U.a)(V.a) = (W.a)`
+3. We will need to balance the equality due to the differing degree - `h(x)t(x)`. To that end, we introduce a degree 4 polynomial that interpolates y=0 at x=1,2,3,4.
+4. t(x) is the zero vector that interpolates y=0 at x=1,2,3,4.
+5. `h(x) = [(U.a)(V.a) - (W.a)] / t(x)`
 
-*If we have U(x) = transform(Ls), V(x) = transform(Rs), and W(x) = transform (Os), then we have three polynomials U(x), V(x), and W(x).*
+## Notation for QAP
 
-Because of the homomorphism, we can (with some implementation details we will get to shortly) then do:
+After interpolations on the columns, we get m polynomials (for each column) of degree n - 1 in the same finite field.
 
-    `U(x)V(x) = W(x)`
+E.g., assuming L has m columns:
 
-and now our R1CS is written as a single expression!
+    L -> U(x) = [u1,...um] = u(x)_{1} + u(x)_{2} + ...+ u(x)_{m}
 
-**I may have lost the plot**
+The reason they are of degree n - 1, is because there are n rows, so the interpolation passes through n points. 
+The smallest degree polynomial that interpolates n points will have degree n - 1.
+
+## Balancing QAP: h(x)t(xc)
+
+- cos of the degree: (U.a)(V.a)
+- so add balancing term
+
+E.g.
+
+    (U*a)(V*a) = 3x^4 + x^3 ...., where a is the value vector of the witness
+
+We can't really say that `(U*a)(V*a) = W*a`. The degree on LHS 4 due to multiplication, while the degree on RHS remains 2.
+So we have to add a balancing term to support the equality.
+
+To that end, we introduce a degree 4 polynomial that interpolates y=0 at x=1,2,3,4.
+
+IF this were R1CS, we have simply done:
+	
+    Ls * Rs = Os + 0
+
+added the **0** vector to RHS.
+
+However, the polynomial is non-zero - but it does represent the zero vector as per the interpolation.
+
+- If we add a zero vector, we aren’t changing the equality.
+- But if the zero vector is transformed to a polynomial degree four, then we can have both LHS and RHS be a degree four polynomial, making it possible for them to be equal everywhere.
+
+### How do we compute this extra polynomial?
+
+> h(x)t(x)
+
+#### t(x)
+
+- When we say the “zero vector” that does not mean a polynomial y = 0; 
+- Rather, it means a polynomial that is zero at x = {1,2,3}.
+
+This polynomial is easy to create, just do:
+	
+    t(x) = (x-1)(x-2)(x-3)
+
+>The polynomial t(x) is not secret, it is constructed during the trusted setup phase of the zero knowledge circuit.
+
+#### h(x)
+
+It should be obvious that although t(x) represents the zero vector (it has roots at x = 1,2,3…), it won’t necessarily balance the equation (U·a)(V·a) = (W·a) + t(x).
+We need to multiply it by yet another polynomial that interpolates zero and balances out the equation.
+
+Here’s a handy theorem: When two non-zero polynomials are multiplied, the roots of the product is the union of the roots of the individual polynomials.
+Therefore, we can multiply t(x) by anything except zero, and it will still correspond to a zero vector in vector land.
+
+### Why not just have h(x)t(x) be one polynomial?
+
+The fact that t(x) is a public polynomial matters. It forces the prover to compute an h(x) that interpolates zero at x = 1,2,3. Otherwise, the prover might pick polynomial that satisfies the equation, but doesn’t actually correspond to anything from the R1CS. We want to know that the polynomials that correspond to Ls, Rs, and Os have roots at x = 1,2,3. If they do, then it is a homomorphism from vector math.

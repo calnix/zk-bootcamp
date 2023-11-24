@@ -86,3 +86,6 @@ where s is the supplied values of the witness vectors, encrypted via G1, G2 and 
 
 Each row/constraint is verified by checking if pairing(kG1, hG2) ?= pairing( 5xG1 + 6yG2 , G2).
 
+## Problem 3: QAP by hand
+
+Convert the following R1CS into a QAP over real numbers, not a finite field
