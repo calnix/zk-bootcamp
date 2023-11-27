@@ -54,6 +54,7 @@ contract HW6 {
         uint256[] memory Rs = matmul2(R, s, n, m);
         uint256[] memory Os = matmul2(O, s, n, m);
 
+<<<<<<< HEAD
         // Ls(G1): [3,7].[G1, G1]
         ECPoint[] memory LsG1;
 
@@ -61,6 +62,24 @@ contract HW6 {
             LsG1[i] = scalarMul(G1, Ls[i]);
         }
 
+=======
+        uint256[] memory LRs;
+
+        //Ls . Rs: element-wise
+        for (uint256 i = 0; i < Ls.length; i++) {
+            LRs[i] = Ls[i] * Rs[i];
+        }
+
+        // LRs(G1): [6,14].[G1, G1]
+        ECPoint[] memory LRsG1 = new ECPoint[](n);
+        for (uint256 i = 0; i < Ls.length; i++) {
+            LRsG1[i] = scalarMul(G1, LRs[i]);
+        }
+
+        // pairing(LRsG1, G2)
+        
+
+>>>>>>> 87ec769bf4971c7421a1429c3cc154e4e89f5696
     }
 
 

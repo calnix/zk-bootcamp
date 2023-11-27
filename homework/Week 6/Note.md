@@ -1,7 +1,12 @@
 https://almondine-song-c43.notion.site/Homework-6-QAP-9142687e4ff94bda967f088a36cff41d
 
+## Problem 1
 
+    function verify(uint256[] calldata L, uint256[] calldata R, uint256[] calldata O, uint256[] calldata s, uint256 n, uint256 m) external view returns(bool)
 
+1. Form of the function
+2. Do proving + verification in SC or,
+3. Python for proving and supply output into smart contract?
 
 ## Problem 2
 
@@ -36,7 +41,6 @@ The witness vector w is encrypted via the multiplication with generator points G
 The prover generates a proof by executing the LHS: L(sG1) 𝇇 R(sG2)
 
 E.g.:
-    
     // hamadard multiplication
     L(sG1) 𝇇 R(sG2) = [kG1 * hG2]  =  [pairing(kG1, hG2)]     
                       [mG1 * nG2]     [pairing(mG1, nG2)]  
@@ -58,7 +62,7 @@ First the verifier will compute O(sG1) and then pairing(OsG1, 1*G2)
 
 2) pairing(OsG1, 1*G2):
 
-Each row/constraimt is its own pairing,
+Each row/constraint is its own pairing,
 
     pairing( [5xG1 + 6yG1], G2)
     pairing( [7xG1 + 8yG1], G2)
@@ -70,15 +74,18 @@ Each row/constraimt is its own pairing,
 
 *QAP: The S in Succient*
 
-However, in pratice this is not how its implemented. In a midly complex circuit, the number of constraints and therefore, number of pairings would be numerous and therefore computationally intensive to execute.
+However, in practice this is not how its implemented. In a mildly complex circuit, the number of constraints and therefore, number of pairings would be numerous and therefore computationally intensive to execute.
 
 The complexity is O(n). We can make it O(1) via QAP.
 Instead of checking the constraints in the R1CS individually, we can now check all of the constraints at the same time by doing the dot product check on the polynomials.
 
 Fundamentally, the vector 
 
-This form is important because it allows us to apply bilienear pairings such that, L(sG1) 𝇇 R(sG2) = O(sG12)
-where s is the supplied values of the witness vectors, encrypted via G1, G2 and G12 generator points repectively.
+This form is important because it allows us to apply bilinear pairings such that, L(sG1) 𝇇 R(sG2) = O(sG12)
+where s is the supplied values of the witness vectors, encrypted via G1, G2 and G12 generator points respectively.
 
 Each row/constraint is verified by checking if pairing(kG1, hG2) ?= pairing( 5xG1 + 6yG2 , G2).
 
+## Problem 3: QAP by hand
+
+Convert the following R1CS into a QAP over real numbers, not a finite field

@@ -39,7 +39,7 @@ The above notation implies that we are using the same generator and elliptic cur
 e(G1,G2) ≠ 1Gᴛ
 
 Let 1Gᴛ denote the identity element of the group Gᴛ.
-We want non-degeneracy because, without it, it is simple (and useless) to define a (degenerate) bilinear map that, for every input, returns 1Gᴛ. 
+We want non-degeneracy because, without it, it is simple (and useless) to define a (degenerate) bilinear map that, for every input, returns 1Gᴛ.
 Such a map would satisfy bilinearity, but would be completely useless.
 
 ### Efficiency
@@ -118,7 +118,7 @@ What is the point of this? Field extensions allow for the property of bilinearit
 
 e: G₁ × G₂ → Gᴛ
 
-G₁: (1,2)  -> 1v-d curve
+G₁: (1,2)  -> 1-d curve
 G₂: ((x₁,y₁), (x₂,y₂)) -> 2d curve
     | y₁ |^2  = | x₁ |^3  + ...
     | y₂ |      | x₂ |  
