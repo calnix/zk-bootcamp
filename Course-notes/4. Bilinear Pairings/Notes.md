@@ -17,7 +17,7 @@ E.g.
     e(P, Q) -> 
 
 
-When G₁ = G₂, the pairing is called symmetric. Otherwise, it is asymmetric. 
+When G₁ = G₂, the pairing is called symmetric. Otherwise, it is asymmetric.
 > These are EC groups
 
 A bilinear mapping must satisfy the following properties: bilinearity, non-degeneracy and efficiency.

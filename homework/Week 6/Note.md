@@ -17,8 +17,8 @@ How does this relate to bilinear pairings?
 
 ### Why does an R1CS require exactly one multiplication per row?
 
-R1CS requires exactly 1 multiplication per row, so that the constraints can be expressed in the matrix form: Cw = Aw * Bw, where each row is a single contraint.
-Adhering to the `Cw = Aw * Bw` form is useful to us as it allows us to apply bilienear pairings.
+R1CS requires exactly 1 multiplication per row, so that the constraints can be expressed in the matrix form: Cw = Aw * Bw, where each row is a single constraint.
+Adhering to the `Cw = Aw * Bw` form is useful to us as it allows us to apply bilinear pairings.
 
 If there are multiple multiplications per row, the resulting form would be: Cw = Aw * Bw * ...
 We would not be able to constructively apply bilinear pairings in this case.
@@ -52,7 +52,7 @@ This is now a ZKP.
 
 *Verification Step*
 
-In the last step, the verifier will check that O(sG12) == the submitted proof. Theoratically, this is what happens:
+In the last step, the verifier will check that O(sG12) == the submitted proof. Theoretically, this is what happens:
 First the verifier will compute O(sG1) and then pairing(OsG1, 1*G2)
 
 1) O(sG1):
