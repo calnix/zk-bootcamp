@@ -29,6 +29,7 @@ print(".........................")
 print(poly_a5)
 print("...........A done ...........")
 
+'''
 # B -> V
 #| 0  0  1  0 | 
 #| 5  0  0  0 | 
@@ -42,17 +43,29 @@ print(poly_b1)
 print(".........................")
 print(poly_b3)
 print("............B done ...........")
+'''
 
 # C -> W
-#| 0  0  0  1 | 
-#| 0  1  0  0 | 
+#| 0  0  0  0  1   0| 
+#| 0  0  0  0  0   1| 
+#| 2  1  0  0  -1  0| 
 
-c_2 = np.array([0, 1])
-c_4 = np.array([1, 0])
+c_1 = np.array([0, 0, 2])
+c_2 = np.array([0, 0, 1])
+c_5 = np.array([1, 0, -1])
+c_6 = np.array([0, 1, 0])
 
+poly_c1 = lagrange(x, c_1)
 poly_c2 = lagrange(x, c_2)
-poly_c4 = lagrange(x, c_4)
+poly_c5 = lagrange(x, c_5)
+poly_c6 = lagrange(x, c_6)
+
+
+print(poly_c1)
+print(".........................")
 print(poly_c2)
 print(".........................")
-print(poly_c4)
+print(poly_c5)
+print(".........................")
+print(poly_c6)
 print("...........C done............")

@@ -3,7 +3,7 @@ from scipy.interpolate import lagrange
 
 # arbitrary x-values
 # 3 elements per col.
-x = np.array([1,2, 3])
+x = np.array([1,2,3])
 
 #  y^2 + 4yx^2 -2 
 # Cw = Aw * Bw
@@ -28,3 +28,44 @@ print(poly_a4)
 print(".........................")
 print(poly_a5)
 print("...........A done ...........")
+
+'''
+# B -> V
+#| 0  0  1  0 | 
+#| 5  0  0  0 | 
+
+b_1 = np.array([0, 5])
+b_3 = np.array([1, 0])
+
+poly_b1 = lagrange(x, b_1)
+poly_b3 = lagrange(x, b_3)
+print(poly_b1)
+print(".........................")
+print(poly_b3)
+print("............B done ...........")
+'''
+
+# C -> W
+#| 0  0  0  0  1   0| 
+#| 0  0  0  0  0   1| 
+#| 2  1  0  0  -1  0| 
+
+c_1 = np.array([0, 0, 2])
+c_2 = np.array([0, 0, 1])
+c_5 = np.array([1, 0, -1])
+c_6 = np.array([0, 1, 0])
+
+poly_c1 = lagrange(x, c_1)
+poly_c2 = lagrange(x, c_2)
+poly_c5 = lagrange(x, c_5)
+poly_c6 = lagrange(x, c_6)
+
+
+print(poly_c1)
+print(".........................")
+print(poly_c2)
+print(".........................")
+print(poly_c5)
+print(".........................")
+print(poly_c6)
+print("...........C done............")
