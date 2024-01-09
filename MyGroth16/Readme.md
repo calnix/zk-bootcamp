@@ -50,3 +50,4 @@ lambdaclass says the prover the calculation of h(x). [A], [B], all provided for 
 (https://blog.lambdaclass.com/groth16/)
 
 But we are taught that the prover calculates [A], [B], [C]
+(https://medium.com/coinmonks/under-the-hood-of-zksnark-groth16-protocol-part-6-b9aa952a2ce2)
