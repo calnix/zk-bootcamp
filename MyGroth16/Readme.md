@@ -36,3 +36,17 @@ https://medium.com/@lucafra92/a-guide-to-zero-knowledge-proofs-f2ff9e5959a8
 
 ### A journey into zero-knowledge proofs
 https://www.cryptologie.net/article/600/a-journey-into-zero-knowledge-proofs/
+
+
+# Questions
+
+1. on gamma and delta - is HT involved
+- https://medium.com/coinmonks/under-the-hood-of-zksnark-groth16-protocol-part-6-b9aa952a2ce2
+- https://blog.lambdaclass.com/groth16/
+
+2. on proving key and prover
+
+lambdaclass says the prover the calculation of h(x). [A], [B], all provided for as part of the proving key.
+(https://blog.lambdaclass.com/groth16/)
+
+But we are taught that the prover calculates [A], [B], [C]
